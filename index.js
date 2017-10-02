@@ -24,6 +24,8 @@ io.on('connection', function (socket) {
             }
         }
 
+        socket.id = data.id;
+
         if (isExit) {
             callback({
                 code: 400,
@@ -33,6 +35,10 @@ io.on('connection', function (socket) {
             onlineUserList.push({
                 id: data.id,
                 socket: socket
+            });
+
+            callback({
+                code: 200
             });
         }
     });
@@ -72,6 +78,15 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
+        var index = -1;
+        for (var i = 0; i < onlineUserList.length; i++) {
+            if (onlineUserList[i].socket.id == socket.id) {
+                index = i;
+            }
+        }
 
+        if (index > -1) {
+            onlineUserList.splice(index, 1);
+        }
     });
 })
