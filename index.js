@@ -38,11 +38,13 @@ io.on('connection', function (socket) {
     });
 
     socket.on('sendMessage', function (data, callback) {
-        if (!data.targetId) {
+        if (typeof(data.targetId) == 'undefined') {
             callback({
                 code: 400,
                 message: 'targetId is null'
             });
+
+            return;
         }
 
         var index = -1;
