@@ -15,6 +15,15 @@ var onlineUserList = [];
 io.on('connection', function (socket) {
 
     socket.on('login', function (data, callback) {
+        if (typeof(data.id) == 'undefined') {
+            callback({
+                code: 400,
+                message: 'id is null'
+            });
+
+            return;
+        }
+
         var isExit = false;
         for (var i = 0; i < onlineUserList.length; i++) {
             if (onlineUserList[i].id == data.id) {
@@ -63,9 +72,10 @@ io.on('connection', function (socket) {
         }
 
         if (index > -1) {
-            onlineUserList[i].sockets.emit('receiveMessage', {
+            onlineUserList[i].socket.emit('receiveMessage', {
                 code: 200,
                 data: {
+                    action: data.action,
                     content: data.content
                 }
             });
