@@ -62,6 +62,24 @@ io.on('connection', function (socket) {
             return;
         }
 
+        if (typeof(data.action) == 'undefined') {
+            callback({
+                code: 400,
+                message: 'action is null'
+            });
+
+            return;
+        }
+
+        if (typeof(data.content) == 'undefined') {
+            callback({
+                code: 400,
+                message: 'content is null'
+            });
+
+            return;
+        }
+
         var index = -1;
         for (var i = 0; i < onlineUserList.length; i++) {
             if (onlineUserList[i].id == data.targetId) {
